@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Timer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="inputs">
+
+<label for="days">Days:</label>
+<select id="days">
+<!-- Generate dropdown options for hours from 1 to 24 -->
+<script>
+for (let i = 0; i <= 28; i++) {
+document.write(`<option value="${i}">${i}</option>`);
+}
+</script>
+</select>
+
+<label for="hours">Hours:</label>
+<select id="hours">
+<!-- Generate dropdown options for hours from 1 to 24 -->
+<script>
+for (let i = 0; i <= 24; i++) {
+document.write(`<option value="${i}">${i}</option>`);
+}
+</script>
+</select>
+
+<label for="minutes">Minutes:</label>
+<select id="minutes">
+<!-- Generate dropdown options for hours from 1 to 24 -->
+<script>
+for (let i = 0; i <= 24; i++) {
+document.write(`<option value="${i}">${i}</option>`);
+}
+</script>
+</select>
+</div>
+
+<div class="timer" id="timer">00:00:00:00</div>
+<div class="controls">
+<center>
+<button style="background-color: #aa62b1;" onclick="setTimer()">Set Timer</button>
+<br>
+<button style="background-color: #62b162;" onclick="startTimer()">Start</button>
+<button style="background-color: rgb(221, 21, 21);" onclick="stopTimer()">Stop</button>
+<button style="background-color: rgb(211, 211, 70);" onclick="resumeTimer()">Resume</button>
+<br>
+<button style="background-color: #4040b8;" onclick="resetTimer()">Reset</button>
+</center>
+</div>
+
+<script>
+let countdown;
+let isPaused = false;
+let remainingTime = 0;
+
+function setTimer() {
+const days = parseInt(document.getElementById('days').value) || 0;
+const hours = parseInt(document.getElementById('hours').value) || 0;
+const minutes = parseInt(document.getElementById('minutes').value) || 0;
+
+remainingTime = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
+displayTime(remainingTime);
+}
+
+function startTimer() {
+if (countdown) {
+clearInterval(countdown);
+}
+countdown = setInterval(() => {
+if (!isPaused) {
+if (remainingTime > 0) {
+remainingTime--;
+displayTime(remainingTime);
+} else {
+clearInterval(countdown);
+}
+}
+}, 1000);
+}
+
+function stopTimer() {
+isPaused = true;
+}
+
+function resumeTimer() {
+isPaused = false;
+}
+
+function resetTimer() {
+clearInterval(countdown);
+remainingTime = 0;
+document.getElementById('days').value = '';
+document.getElementById('hours').value = '';
+document.getElementById('minutes').value = '';
+displayTime(remainingTime);
+}
+
+function displayTime(seconds) {
+const days = Math.floor(seconds / (24 * 60 * 60));
+const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+const minutes = Math.floor((seconds % (60 * 60)) / 60);
+const secs = seconds % 60;
+document.getElementById('timer').innerHTML = `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+window.onload = () => {
+displayTime(remainingTime);
+};
+</script>
+
+</body>
+</html>
