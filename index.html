@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="main">
+<div class="title">
 <label for="days">Days:</label>
 <select id="days">
 <script>
@@ -16,7 +17,9 @@ document.write(`<option value="${i}">${i}</option>`);
 }
 </script>
 </select>
+</div>
 
+<div class="title">
 <label for="hours">Hours:</label>
 <select id="hours">
 <script>
@@ -25,7 +28,8 @@ document.write(`<option value="${i}">${i}</option>`);
 }
 </script>
 </select>
-
+</div>
+<div class="title">
 <label for="minutes">Minutes:</label>
 <select id="minutes">
 <script>
@@ -34,7 +38,8 @@ document.write(`<option value="${i}">${i}</option>`);
 }
 </script>
 </select>
-
+</div>
+<div class="title">
 <label for="seconds">Seconds:</label>
 <select id="seconds">
 <script>
@@ -44,8 +49,10 @@ document.write(`<option value="${i}">${i}</option>`);
 </script>
 </select>
 </div>
+
+</div>
 <div id="timerDisplay">
-    00:00:00:00
+  00:00:00:00
 </div>
 <div class="buttons">
 <button onclick="setTimer()">Set Timer</button>
@@ -80,22 +87,22 @@ displayTime(totalTimeInSeconds);
 }
 
 function displayTime(seconds) {
-  if (seconds <= 0) {
-    timerDisplay.innerHTML = "00:00:00:00";
-  } else {
-    let days = Math.floor(seconds / (24 * 60 * 60));
-    let hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
-    let minutes = Math.floor((seconds % (60 * 60)) / 60);
-    let secs = seconds % 60;
+if (seconds <= 0) {
+  timerDisplay.innerHTML = "00:00:00:00";
+} else {
+  let days = Math.floor(seconds / (24 * 60 * 60));
+  let hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+  let minutes = Math.floor((seconds % (60 * 60)) / 60);
+  let secs = seconds % 60;
 
-    days = days.toString().padStart(2, '0');
-    hours = hours.toString().padStart(2, '0');
-    minutes = minutes.toString().padStart(2, '0');
-    secs = secs.toString().padStart(2, '0');
+  days = days.toString().padStart(2, '0');
+  hours = hours.toString().padStart(2, '0');
+  minutes = minutes.toString().padStart(2, '0');
+  secs = secs.toString().padStart(2, '0');
 
-    // timerDisplay.innerHTML = `Time Remaining: ${days}:${hours}:${minutes}:${secs}`;
-    timerDisplay.innerHTML = `${days} : ${hours} : ${minutes} : ${secs}`;
-  }
+  // timerDisplay.innerHTML = `Time Remaining: ${days}:${hours}:${minutes}:${secs}`;
+  timerDisplay.innerHTML = `${days} : ${hours} : ${minutes} : ${secs}`;
+}
 }
 
 
@@ -144,10 +151,10 @@ displayTime(totalTimeInSeconds);
 }
 
 function playSound() {
-  // Create an audio element
-  let audio = new Audio('music.mp3'); // Replace 'path/to/sound/file.mp3' with the actual path to your audio file
-  // Play the audio
-  audio.play();
+// Create an audio element
+let audio = new Audio('music.mp3'); // Replace 'path/to/sound/file.mp3' with the actual path to your audio file
+// Play the audio
+audio.play();
 }
 </script>
 </body>
