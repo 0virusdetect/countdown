@@ -11,8 +11,20 @@ align-items: center;
 }
 .main{
     margin: 20px 0;
+    text-align: center;
+}
+.title label{
+    width:90px;
+    font-size: 18px;
+    display: inline-block;
+    margin: 10px;
+}
+select{
+    width: 80px;
+    height: 25px;
 }
 #timerDisplay{
+    font-size: 49px;
     margin: 5px 0;
 }
 .buttons{
