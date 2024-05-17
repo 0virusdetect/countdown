@@ -4,31 +4,22 @@ padding: 0;
 box-sizing: border-box;
 }
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    }
-    .timer {
-    font-size: 2em;
-    margin: 20px 0px;
-    }
-    .controls button {
-    margin: 5px;
-    padding: 6px 0px;
-    width: 90px;
-    border-radius: 6px;
-    font-size: 1em;
-    border: none;
-    border: 1px solid rgb(139, 133, 133);
-    }
-    .inputs input {
-    margin: 5px;
-    padding: 10px;
-    font-size: 1em;
-    width: 60px;
+font-family: Arial, sans-serif;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.main{
+    margin: 20px 0;
+}
+#timerDisplay{
+    margin: 5px 0;
+}
+.buttons{
     text-align: center;
-    }
+}
+.buttons button{
+    width: 80px;
+    margin: 10px 0;
+    padding: 2px 0;
+}
