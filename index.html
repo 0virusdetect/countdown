@@ -3,18 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Countdown Timer</title>
+<title>Countdown</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="inputs">
-
+<div class="main">
 <label for="days">Days:</label>
 <select id="days">
-<!-- Generate dropdown options for hours from 1 to 24 -->
 <script>
-for (let i = 0; i <= 28; i++) {
+for (let i = 0; i <= 31; i++) {
 document.write(`<option value="${i}">${i}</option>`);
 }
 </script>
@@ -22,7 +19,6 @@ document.write(`<option value="${i}">${i}</option>`);
 
 <label for="hours">Hours:</label>
 <select id="hours">
-<!-- Generate dropdown options for hours from 1 to 24 -->
 <script>
 for (let i = 0; i <= 24; i++) {
 document.write(`<option value="${i}">${i}</option>`);
@@ -32,87 +28,127 @@ document.write(`<option value="${i}">${i}</option>`);
 
 <label for="minutes">Minutes:</label>
 <select id="minutes">
-<!-- Generate dropdown options for hours from 1 to 24 -->
 <script>
-for (let i = 0; i <= 24; i++) {
+for (let i = 0; i <= 60; i++) {
+document.write(`<option value="${i}">${i}</option>`);
+}
+</script>
+</select>
+
+<label for="seconds">Seconds:</label>
+<select id="seconds">
+<script>
+for (let i = 0; i <= 60; i++) {
 document.write(`<option value="${i}">${i}</option>`);
 }
 </script>
 </select>
 </div>
-
-<div class="timer" id="timer">00:00:00:00</div>
-<div class="controls">
-<center>
-<button style="background-color: #aa62b1;" onclick="setTimer()">Set Timer</button>
+<div id="timerDisplay">
+    00:00:00:00
+</div>
+<div class="buttons">
+<button onclick="setTimer()">Set Timer</button>
 <br>
-<button style="background-color: #62b162;" onclick="startTimer()">Start</button>
-<button style="background-color: rgb(221, 21, 21);" onclick="stopTimer()">Stop</button>
-<button style="background-color: rgb(211, 211, 70);" onclick="resumeTimer()">Resume</button>
+<button onclick="startTimer()">Start</button>
+<button onclick="stopTimer()">Stop</button>
+<button onclick="resumeTimer()">Resume</button>
 <br>
-<button style="background-color: #4040b8;" onclick="resetTimer()">Reset</button>
-</center>
+<button onclick="resetTimer()">Reset</button>
 </div>
 
+
 <script>
-let countdown;
-let isPaused = false;
-let remainingTime = 0;
+let daysInput = document.getElementById('days');
+let hoursInput = document.getElementById('hours');
+let minutesInput = document.getElementById('minutes');
+let secondsInput = document.getElementById('seconds');
+let timerDisplay = document.getElementById('timerDisplay');
+
+let totalTimeInSeconds;
+let timer;
+let isTimerRunning = false;
 
 function setTimer() {
-const days = parseInt(document.getElementById('days').value) || 0;
-const hours = parseInt(document.getElementById('hours').value) || 0;
-const minutes = parseInt(document.getElementById('minutes').value) || 0;
+let days = parseInt(daysInput.value);
+let hours = parseInt(hoursInput.value);
+let minutes = parseInt(minutesInput.value);
+let seconds = parseInt(secondsInput.value);
 
-remainingTime = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
-displayTime(remainingTime);
-}
-
-function startTimer() {
-if (countdown) {
-clearInterval(countdown);
-}
-countdown = setInterval(() => {
-if (!isPaused) {
-if (remainingTime > 0) {
-remainingTime--;
-displayTime(remainingTime);
-} else {
-clearInterval(countdown);
-}
-}
-}, 1000);
-}
-
-function stopTimer() {
-isPaused = true;
-}
-
-function resumeTimer() {
-isPaused = false;
-}
-
-function resetTimer() {
-clearInterval(countdown);
-remainingTime = 0;
-document.getElementById('days').value = '';
-document.getElementById('hours').value = '';
-document.getElementById('minutes').value = '';
-displayTime(remainingTime);
+totalTimeInSeconds = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
+displayTime(totalTimeInSeconds);
 }
 
 function displayTime(seconds) {
-const days = Math.floor(seconds / (24 * 60 * 60));
-const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
-const minutes = Math.floor((seconds % (60 * 60)) / 60);
-const secs = seconds % 60;
-document.getElementById('timer').innerHTML = `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  if (seconds <= 0) {
+    timerDisplay.innerHTML = "00:00:00:00";
+  } else {
+    let days = Math.floor(seconds / (24 * 60 * 60));
+    let hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+    let minutes = Math.floor((seconds % (60 * 60)) / 60);
+    let secs = seconds % 60;
+
+    days = days.toString().padStart(2, '0');
+    hours = hours.toString().padStart(2, '0');
+    minutes = minutes.toString().padStart(2, '0');
+    secs = secs.toString().padStart(2, '0');
+
+    // timerDisplay.innerHTML = `Time Remaining: ${days}:${hours}:${minutes}:${secs}`;
+    timerDisplay.innerHTML = `${days} : ${hours} : ${minutes} : ${secs}`;
+  }
 }
 
-window.onload = () => {
-displayTime(remainingTime);
-};
-</script>
 
+function startTimer() {
+if (!isTimerRunning && totalTimeInSeconds > 0) {
+isTimerRunning = true;
+timer = setInterval(() => {
+totalTimeInSeconds--;
+displayTime(totalTimeInSeconds);
+if (totalTimeInSeconds <= 0) {
+clearInterval(timer);
+isTimerRunning = false;
+timerDisplay.innerHTML = "Time's up";
+playSound();
+}
+}, 1000);
+}
+}
+
+function stopTimer() {
+clearInterval(timer);
+isTimerRunning = false;
+}
+
+function resumeTimer() {
+if (!isTimerRunning && totalTimeInSeconds > 0) {
+isTimerRunning = true;
+timer = setInterval(() => {
+totalTimeInSeconds--;
+displayTime(totalTimeInSeconds);
+if (totalTimeInSeconds <= 0) {
+clearInterval(timer);
+isTimerRunning = false;
+timerDisplay.innerHTML = "Time's up";
+playSound();
+}
+}, 1000);
+}
+}
+
+function resetTimer() {
+clearInterval(timer);
+isTimerRunning = false;
+totalTimeInSeconds = 0;
+displayTime(totalTimeInSeconds);
+}
+
+function playSound() {
+  // Create an audio element
+  let audio = new Audio('music.mp3'); // Replace 'path/to/sound/file.mp3' with the actual path to your audio file
+  // Play the audio
+  audio.play();
+}
+</script>
 </body>
 </html>
