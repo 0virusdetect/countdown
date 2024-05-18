@@ -52,7 +52,7 @@ document.write(`<option value="${i}">${i}</option>`);
 
 </div>
 <div id="timerDisplay">
-  00 : 00 : 00 : 00
+00 : 00 : 00 : 00
 </div>
 <div class="buttons">
 <button onclick="setTimer()">Set Timer</button>
@@ -88,9 +88,9 @@ displayTime(totalTimeInSeconds);
 
 function displayTime(seconds) {
 if (seconds <= 0) {
-  timerDisplay.innerHTML = "00:00:00:00";
+timerDisplay.innerHTML = "00:00:00:00";
 } else {
-  let days = Math.floor(seconds / (24 * 60 * 60));
+let days = Math.floor(seconds / (24 * 60 * 60));
 let hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
 let minutes = Math.floor((seconds % (60 * 60)) / 60);
 let secs = seconds % 60;
@@ -98,13 +98,13 @@ let secs = seconds % 60;
 let displayText = '';
 
 if (days > 0) {
-    displayText += `${days.toString().padStart(2, '0')}:`;
+displayText += `${days.toString().padStart(2, '0')}:`;
 }
 if (hours > 0 || displayText !== '') {
-    displayText += `${hours.toString().padStart(2, '0')}:`;
+displayText += `${hours.toString().padStart(2, '0')}:`;
 }
 if (minutes > 0 || displayText !== '') {
-    displayText += `${minutes.toString().padStart(2, '0')}:`;
+displayText += `${minutes.toString().padStart(2, '0')}:`;
 }
 displayText += `${secs.toString().padStart(2, '0')}`;
 
@@ -124,6 +124,7 @@ clearInterval(timer);
 isTimerRunning = false;
 timerDisplay.innerHTML = "Time's up";
 playSound();
+vibratePhone();
 }
 }, 1000);
 }
@@ -133,6 +134,7 @@ function stopTimer() {
 clearInterval(timer);
 isTimerRunning = false;
 }
+
 
 function resumeTimer() {
 if (!isTimerRunning && totalTimeInSeconds > 0) {
@@ -145,25 +147,35 @@ clearInterval(timer);
 isTimerRunning = false;
 timerDisplay.innerHTML = "Time's up";
 playSound();
+vibratePhone();
 }
 }, 1000);
 }
 }
 
 function resetTimer() {
-    clearInterval(timer);
-    isTimerRunning = false;
-    totalTimeInSeconds = 0;
-    displayTime(totalTimeInSeconds);
+clearInterval(timer);
+isTimerRunning = false;
+totalTimeInSeconds = 0;
+displayTime(totalTimeInSeconds);
 
-    // Reset select options
-    document.getElementById('days').selectedIndex = 0;
-    document.getElementById('hours').selectedIndex = 0;
-    document.getElementById('minutes').selectedIndex = 0;
-    document.getElementById('seconds').selectedIndex = 0;
+// Reset select options
+document.getElementById('days').selectedIndex = 0;
+document.getElementById('hours').selectedIndex = 0;
+document.getElementById('minutes').selectedIndex = 0;
+document.getElementById('seconds').selectedIndex = 0;
 }
 
-
+function vibratePhone() {
+// Check if the browser supports vibration API
+if ("vibrate" in navigator) {
+// Vibrate for 500 milliseconds
+navigator.vibrate(500);
+} else {
+// If the browser doesn't support vibration, log an error message
+console.log("Vibration not supported");
+}
+}
 function playSound() {
 // Create an audio element
 let audio = new Audio('music.mp3'); // Replace 'path/to/sound/file.mp3' with the actual path to your audio file
