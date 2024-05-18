@@ -168,13 +168,7 @@ document.getElementById('seconds').selectedIndex = 0;
 
 function vibratePhone() {
 // Check if the browser supports vibration API
-if ("vibrate" in navigator) {
-// Vibrate for 500 milliseconds
-navigator.vibrate(500);
-} else {
-// If the browser doesn't support vibration, log an error message
-console.log("Vibration not supported");
-}
+navigator.vibrate(200);
 }
 function playSound() {
 // Create an audio element
